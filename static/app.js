@@ -88,7 +88,9 @@ d3.json("../data/samples.json").then((data) => {
         var layout = {
             title: `Top 10 OTUs found in Test Subject ${option_choice}`,
             xaxis: {title: "Sample Values"},
-            yaxis: {title: "OTU IDs"}
+            // reversing order of y axis
+            // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
+            yaxis: {title: "OTU IDs", autorange:'reversed'}
         };
 
         var plot_data = [trace];
