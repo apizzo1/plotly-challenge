@@ -6,10 +6,13 @@ d3.json("../data/samples.json").then((data) => {
     // bring in list of names
     var names = data.names;
     console.log(names);
-    // Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-// Use sample_values as the values for the bar chart.
-// Use otu_ids as the labels for the bar chart.
-//  Use otu_labels as the hovertext for the chart.
+
+    // adding values to menu
+    var menu_select = d3.select("#selDataset");
+    names.forEach(function(name) {
+        var option = menu_select.append("option").text(name);
+        option.attr("value", `option${name}`);
+    })
 
     // bring in samples_values arrays
     var sample_values_array = data.samples.map(row=>row.sample_values);
@@ -55,10 +58,14 @@ d3.json("../data/samples.json").then((data) => {
     console.log(top_otu_labels);
 
 
+    // plotting data in horizontal bar chart
     var trace = {
         type: 'bar',
-        y: top_otu_ids[0],
+        // Use sample_values as the values for the bar chart.
         x: top_sample_values[0],
+        // Use otu_ids as the labels for the bar chart.
+        y: top_otu_ids[0],
+        //  Use otu_labels as the hovertext for the chart.
         text: top_otu_labels[0],
         orientation: 'h'
     }
