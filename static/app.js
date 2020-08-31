@@ -7,7 +7,7 @@ d3.json("../data/samples.json").then((data) => {
     var names = data.names;
     console.log(names);
 
-    // adding values to menu
+    // // adding values to menu
     var menu_select = d3.select("#selDataset");
     names.forEach(function(name) {
         var option = menu_select.append("option").text(name);
@@ -57,36 +57,43 @@ d3.json("../data/samples.json").then((data) => {
 
     console.log(top_otu_labels);
 
-    // get index from value in array:
-    //  source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#:~:text=The%20indexOf()%20method%20returns,if%20it%20is%20not%20present.
-    console.log(names.indexOf('941'));
-
     // event listener for menu option change
     d3.select("#selDataset").on("change", updateDashboard);
 
     // event handler function
     function updateDashboard() {
-        var menu_choice = d3.select("#selDataset");
+        
+        var menu_choice = d3.selectAll("#selDataset");
         var chosen_subject = menu_choice.property("value");
         // remove 'option' from output text
         var option_choice = chosen_subject.substring(6);
-        console.log(option_choice);
+        console.log(`option choice ${option_choice}`);
+        // find index in names array of the test subject
+        //  source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf#:~:text=The%20indexOf()%20method%20returns,if%20it%20is%20not%20present.
+        var patient_chosen = names.indexOf(option_choice);
+        console.log(patient_chosen);
 
-        // plotting data in horizontal bar chart
+        // plotting data in horizontal bar chart using patient index number
         var trace = {
             type: 'bar',
             // Use sample_values as the values for the bar chart.
-            x: top_sample_values[0],
+            x: top_sample_values[patient_chosen],
             // Use otu_ids as the labels for the bar chart.
-            y: top_otu_ids[0],
+            y: top_otu_ids[patient_chosen],
             //  Use otu_labels as the hovertext for the chart.
-            text: top_otu_labels[0],
+            text: top_otu_labels[patient_chosen],
             orientation: 'h'
         }
+        // format plot with axes labels and title
+        var layout = {
+            title: `Top 10 OTUs found in Test Subject ${option_choice}`,
+            xaxis: {title: "Sample Values"},
+            yaxis: {title: "OTU IDs"}
+        };
 
         var plot_data = [trace];
 
-        Plotly.newPlot("bar", plot_data);
+        Plotly.newPlot("bar", plot_data, layout);
     }
 
     
