@@ -9,19 +9,19 @@ d3.json("../data/samples.json").then((data) => {
 
     // // adding values to menu
     var menu_select = d3.select("#selDataset");
-    names.forEach(function(name) {
+    names.forEach(function (name) {
         var option = menu_select.append("option").text(name);
         option.attr("value", `option${name}`);
     })
 
     // bring in samples_values arrays
-    var sample_values_array = data.samples.map(row=>row.sample_values);
+    var sample_values_array = data.samples.map(row => row.sample_values);
     console.log(sample_values_array);
     // bring in otu_ids arrays
-    var otu_ids = data.samples.map(row=>row.otu_ids);
+    var otu_ids = data.samples.map(row => row.otu_ids);
     console.log(otu_ids);
     // bring in otu_labels
-    var otu_labels = data.samples.map(row=>row.otu_labels);
+    var otu_labels = data.samples.map(row => row.otu_labels);
     console.log(otu_labels);
 
     // slice the arrays to show only the top 10 OTUs found in the individual
@@ -32,15 +32,15 @@ d3.json("../data/samples.json").then((data) => {
     var top_otu_labels = [];
 
     // slice top 10 sample values
-    sample_values_array.forEach(function(array) {
-        var top_ten_sample_values = array.slice(0,10);
+    sample_values_array.forEach(function (array) {
+        var top_ten_sample_values = array.slice(0, 10);
         top_sample_values.push(top_ten_sample_values);
     })
     console.log(top_sample_values);
 
     // slice top ten otu_ids
-    otu_ids.forEach(function(array) {
-        var top_ten_otu_ids = array.slice(0,10);
+    otu_ids.forEach(function (array) {
+        var top_ten_otu_ids = array.slice(0, 10);
         // adding 'OTU' to the beginning of each array element
         // source: https://stackoverflow.com/questions/20498409/adding-text-to-beginning-of-each-array-element
         top_ten_otu_ids = top_ten_otu_ids.map(i => 'OTU ' + i);
@@ -50,8 +50,8 @@ d3.json("../data/samples.json").then((data) => {
     console.log(top_otu_ids);
 
     // slice top ten otu_labels
-    otu_labels.forEach(function(array) {
-        var top_ten_otu_labels = array.slice(0,10);
+    otu_labels.forEach(function (array) {
+        var top_ten_otu_labels = array.slice(0, 10);
         top_otu_labels.push(top_ten_otu_labels);
     })
 
@@ -62,7 +62,7 @@ d3.json("../data/samples.json").then((data) => {
 
     // event handler function
     function updateDashboard() {
-        
+
         var menu_choice = d3.selectAll("#selDataset");
         var chosen_subject = menu_choice.property("value");
         // remove 'option' from output text
@@ -83,20 +83,39 @@ d3.json("../data/samples.json").then((data) => {
             //  Use otu_labels as the hovertext for the chart.
             text: top_otu_labels[patient_chosen],
             orientation: 'h'
-        }
+        };
         // format plot with axes labels and title
         var layout = {
             title: `Top 10 OTUs found in Test Subject ${option_choice}`,
             xaxis: {title: "Sample Values"},
             // reversing order of y axis
             // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
-            yaxis: {title: "OTU IDs", autorange:'reversed'}
+            yaxis: {title: "OTU IDs", autorange: 'reversed'}
         };
 
-        var plot_data = [trace];
+        var bar_plot_data = [trace];
 
-        Plotly.newPlot("bar", plot_data, layout);
-    }
+        Plotly.newPlot("bar", bar_plot_data, layout);
 
-    
+        
+        // Create a bubble chart that displays each sample.
+        var trace2 = {
+            // Use otu_ids for the x values.
+            x: otu_ids[patient_chosen],
+            // Use sample_values for the y values.
+            y: sample_values_array[patient_chosen],
+            mode: 'markers',
+            // Use sample_values for the marker size.
+            marker: {size: sample_values_array[patient_chosen] },
+            // Use otu_ids for the marker colors.
+            // Use otu_labels for the text values.
+        }
+
+        var bubble_plot_data = [trace2];
+
+        Plotly.newPlot("bubble", bubble_plot_data);
+
+
+    };
+
 });
