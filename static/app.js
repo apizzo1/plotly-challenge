@@ -92,7 +92,9 @@ d3.json("../data/samples.json").then((data) => {
 
             Object.entries(subject).forEach(([key, value]) => {
                 // console.log(`${key}: ${value}`);
-                var row = panel_body.append('p').text(`${key}: ${value}`);
+                var row = panel_body.append('div')
+                row.attr("class", "demographics selection")
+                row.text(`${key}: ${value}`);
             })
         });
 
