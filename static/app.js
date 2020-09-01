@@ -60,9 +60,16 @@ d3.json("../data/samples.json").then((data) => {
     // event listener for menu option change
     d3.select("#selDataset").on("change", updateDashboard);
 
+    // find panel information on index.html
+    var panel_body = d3.select(".panel-body");
+
     // event handler function
     function updateDashboard() {
 
+        // remove any rows that exist from demographics panel
+        panel_body.html("");
+
+        // get test subject choice from user
         var menu_choice = d3.selectAll("#selDataset");
         var chosen_subject = menu_choice.property("value");
         // remove 'option' from output text
@@ -76,9 +83,7 @@ d3.json("../data/samples.json").then((data) => {
         // Demographics Data
 
         // Display each key-value pair from the metadata JSON object somewhere on the page.
-        // find panel information on index.html
-        var panel_body = d3.select(".panel-body");
-
+        
         // Filter for the selected test subject using filter function
         function filter_metadata(test_subject) {
             return test_subject.id == option_choice;
