@@ -73,6 +73,31 @@ d3.json("../data/samples.json").then((data) => {
         var patient_chosen = names.indexOf(option_choice);
         console.log(patient_chosen);
 
+        // Demographics Data
+
+        // Display each key-value pair from the metadata JSON object somewhere on the page.
+        // find panel information on index.html
+        var panel_body = d3.select(".panel-body");
+
+        // Filter for the selected test subject using filter function
+        function filter_metadata(test_subject) {
+            return test_subject.id == option_choice;
+        }
+        // filter metadata for user selected test subject
+        var demo_data = data.metadata.filter(filter_metadata);
+        console.log(demo_data);
+
+        // print key:value pairs in Demographics Box
+        demo_data.forEach((subject) => {
+
+            Object.entries(subject).forEach(([key, value]) => {
+                // console.log(`${key}: ${value}`);
+                var row = panel_body.append('p').text(`${key}: ${value}`);
+            })
+        });
+
+        // Plotting
+
         // plotting data in horizontal bar chart using patient index number
         var trace = {
             type: 'bar',
@@ -106,14 +131,22 @@ d3.json("../data/samples.json").then((data) => {
             y: sample_values_array[patient_chosen],
             mode: 'markers',
             // Use sample_values for the marker size.
-            marker: {size: sample_values_array[patient_chosen] },
             // Use otu_ids for the marker colors.
+            marker: {color: otu_ids[patient_chosen],  size: sample_values_array[patient_chosen] },
+            
             // Use otu_labels for the text values.
+            text: otu_labels[patient_chosen]
+        }
+
+        var layout_bubble = {
+            title: `All OTUs for Test Subject ${option_choice}`,
+            xaxis: {title: "OTU IDs"},
+            yaxis: {title: "Sample Values"}
         }
 
         var bubble_plot_data = [trace2];
 
-        Plotly.newPlot("bubble", bubble_plot_data);
+        Plotly.newPlot("bubble", bubble_plot_data, layout_bubble);
 
 
     };
