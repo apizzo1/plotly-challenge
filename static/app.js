@@ -58,6 +58,38 @@ d3.json("../data/samples.json").then((data) => {
 
     console.log(top_otu_labels);
 
+
+    // Add default plot
+    function init() {
+
+         // plotting data in horizontal bar chart using patient index number
+         var trace0 = {
+            type: 'bar',
+            // Use sample_values as the values for the bar chart.
+            x: top_sample_values[0],
+            // Use otu_ids as the labels for the bar chart.
+            y: top_otu_ids[0],
+            //  Use otu_labels as the hovertext for the chart.
+            text: top_otu_labels[0],
+            orientation: 'h'
+        };
+        // format plot with axes labels and title
+        var layout = {
+            title: `Top 10 OTUs found in Test Subject 940`,
+            xaxis: {title: "Sample Values"},
+            // reversing order of y axis
+            // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
+            yaxis: {title: "OTU IDs", autorange: 'reversed'}
+        };
+
+        var bar_plot_data0 = [trace0];
+
+        Plotly.newPlot("bar", bar_plot_data0, layout);
+        
+    }
+
+    
+
     // event listener for menu option change
     d3.select("#selDataset").on("change", updateDashboard);
 
@@ -156,13 +188,14 @@ d3.json("../data/samples.json").then((data) => {
 
         Plotly.newPlot("bubble", bubble_plot_data, layout_bubble);
 
-        // gauge plot
+        // gauge plot to plot the weekly washing frequency of the individual.
 
         console.log(demo_data[0].wfreq);
 
         var trace3 = 
             {
-                domain: { x: [0, 1], y: [0, 1] },
+                // domain: { x: [0, 1], y: [0, 1]},
+                // reference the demographics data for the test subject to get washing frequency
                 value: demo_data[0].wfreq,
                 title: { text: "Belly Button Washing Frequency" },
                 type: "indicator",
@@ -181,7 +214,7 @@ d3.json("../data/samples.json").then((data) => {
                       { range: [6, 7], color: 'rgb(25,137,125)'},
                       { range: [7, 8], color: 'rgb(18,116,117)'},
                       { range: [8, 9], color: 'rgb(25,94,106)'}
-                     ]};
+                     ]}
             };
 
         var gauge_plot_data = [trace3];
@@ -189,5 +222,7 @@ d3.json("../data/samples.json").then((data) => {
         Plotly.newPlot("gauge",gauge_plot_data);
 
     };
+
+    init();
 
 });
