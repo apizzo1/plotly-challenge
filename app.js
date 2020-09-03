@@ -146,6 +146,14 @@ d3.json("data/samples.json").then((data) => {
         // Append header with test subject name
         subject_header.append('h2').text(`Dashboard for Test Subject ${names[0]}`);
 
+
+         // print key:value pairs in Demographics Box for default test subject
+         Object.entries(data.metadata[0]).forEach(([key, value]) => {
+            var row = panel_body.append('div')
+            row.attr("class", "demographics selection")
+            row.text(`${key}: ${value}`);
+         });
+    
     }
 
     
