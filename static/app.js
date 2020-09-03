@@ -58,6 +58,9 @@ d3.json("../data/samples.json").then((data) => {
 
     console.log(top_otu_labels);
 
+    // find div where test subject header will be applied
+    var subject_header = d3.select(".title");
+
 
     // Add default plots - default is test subject 940
     function init() {
@@ -100,7 +103,7 @@ d3.json("../data/samples.json").then((data) => {
             text: otu_labels[0]
         }
 
-        var layout_bubble = {
+        var layout_bubble_0 = {
             title: `All OTUs for Test Subject ${names[0]}`,
             xaxis: {title: "OTU IDs"},
             yaxis: {title: "Sample Values"}
@@ -108,7 +111,7 @@ d3.json("../data/samples.json").then((data) => {
 
         var bubble_plot_data_0 = [trace0_2];
         // plot bubble plot
-        Plotly.newPlot("bubble", bubble_plot_data_0, layout_bubble);
+        Plotly.newPlot("bubble", bubble_plot_data_0, layout_bubble_0);
 
         
         var trace0_3 = 
@@ -120,7 +123,7 @@ d3.json("../data/samples.json").then((data) => {
             type: "indicator",
             mode: "gauge+number",
             gauge: {
-                axis: { range: [null, 9], tickwidth: 1},
+                axis: {range: [null, 9], tickmode: "linear", tick0: 0, dtick: 1},
                 bar: { color: 'rgb(195,56,90)', thickness: 0.3},
                 steps: [
                     //colors source:  https://plotly.com/python/builtin-colorscales/
@@ -140,6 +143,9 @@ d3.json("../data/samples.json").then((data) => {
         // plot gauge plot
         Plotly.newPlot("gauge",gauge_plot_data_0);
 
+        // Append header with test subject name
+        subject_header.append('h2').text(`Dashboard for Test Subject ${names[0]}`);
+
     }
 
     
@@ -155,6 +161,8 @@ d3.json("../data/samples.json").then((data) => {
 
         // remove any rows that currently exist from demographics panel
         panel_body.html("");
+        // remove title, to be replaced with selected test subject title
+        subject_header.html("");
 
         // get test subject choice from user
         var menu_choice = d3.selectAll("#selDataset");
