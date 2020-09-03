@@ -106,7 +106,8 @@ d3.json("data/samples.json").then((data) => {
         var layout_bubble_0 = {
             title: `All OTUs for Test Subject`,
             xaxis: {title: "OTU IDs"},
-            yaxis: {title: "Sample Values"}
+            yaxis: {title: "Sample Values"},
+            plot_bgcolor:"darkgray"
         }
 
         var bubble_plot_data_0 = [trace0_2];
@@ -116,7 +117,6 @@ d3.json("data/samples.json").then((data) => {
         
         var trace0_3 = 
         {
-            // domain: { x: [0, 1], y: [0, 1]},
             // reference the demographics data for the test subject to get washing frequency
             value: data.metadata[0].wfreq,
             title: { text: "Belly Button Washing Frequency" },
@@ -213,7 +213,7 @@ d3.json("data/samples.json").then((data) => {
 
         // plotting data in horizontal bar chart using patient index number
 
-        // Restyle bar plot with selected test subject data
+        // Restyle bar plot from init() with selected test subject data
         var x_bar = top_sample_values[patient_chosen];
         var y_bar = top_otu_ids[patient_chosen];
         var text_bar = top_otu_labels[patient_chosen];
@@ -224,7 +224,7 @@ d3.json("data/samples.json").then((data) => {
 
         // // Create a bubble chart that displays each sample.
 
-        // Restyle bubble plot with selected test subject data
+        // Restyle bubble plot from init() with selected test subject data
         var x_bubble = otu_ids[patient_chosen];
         var y_bubble = sample_values_array[patient_chosen];
         var marker_bubble = {color: otu_ids[patient_chosen],  size: sample_values_array[patient_chosen]};
@@ -234,11 +234,11 @@ d3.json("data/samples.json").then((data) => {
         Plotly.restyle("bubble", "marker", [marker_bubble]);
         Plotly.restyle("bubble", "text", [text_bubble]);
 
-        // gauge plot to plot the weekly washing frequency of the individual.
+        // Gauge plot to plot the weekly washing frequency of the individual.
         // get wash frequency 
         console.log(demo_data[0].wfreq);
 
-        // Restyle Gauge plot with selected test subject data
+        // Restyle Gauge plot from init() with selected test subject data
         // reference the demographics data for the test subject to get washing frequency
         var value_gauge = demo_data[0].wfreq;
      
