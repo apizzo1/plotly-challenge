@@ -59,7 +59,7 @@ d3.json("../data/samples.json").then((data) => {
     console.log(top_otu_labels);
 
 
-    // Add default plot
+    // Add default plot - default is test subject 940
     function init() {
 
          // plotting data in horizontal bar chart using patient index number
@@ -85,6 +85,61 @@ d3.json("../data/samples.json").then((data) => {
         var bar_plot_data0 = [trace0];
 
         Plotly.newPlot("bar", bar_plot_data0, layout);
+
+        var trace0_2 = {
+            // Use otu_ids for the x values.
+            x: otu_ids[0],
+            // Use sample_values for the y values.
+            y: sample_values_array[0],
+            mode: 'markers',
+            // Use sample_values for the marker size.
+            // Use otu_ids for the marker colors.
+            marker: {color: otu_ids[0],  size: sample_values_array[0] },
+            
+            // Use otu_labels for the text values.
+            text: otu_labels[0]
+        }
+
+        var layout_bubble = {
+            title: `All OTUs for Test Subject 940`,
+            xaxis: {title: "OTU IDs"},
+            yaxis: {title: "Sample Values"}
+        }
+
+        var bubble_plot_data_0 = [trace0_2];
+
+        Plotly.newPlot("bubble", bubble_plot_data_0, layout_bubble);
+
+        
+        var trace0_3 = 
+        {
+            // domain: { x: [0, 1], y: [0, 1]},
+            // reference the demographics data for the test subject to get washing frequency
+            value: data.metadata[0].wfreq,
+            title: { text: "Belly Button Washing Frequency" },
+            type: "indicator",
+            mode: "gauge+number",
+            gauge: {
+                axis: { range: [null, 9], tickwidth: 1},
+                bar: { color: 'rgb(195,56,90)', thickness: 0.3},
+                steps: [
+                    //colors source:  https://plotly.com/python/builtin-colorscales/
+                  { range: [0, 1], color: 'rgb(254,245,244)'},
+                  { range: [1, 2], color: 'rgb(222,224,210)'},
+                  { range: [2, 3], color: 'rgb(189,206,181)'},
+                  { range: [3, 4], color: 'rgb(153,189,156)'},
+                  { range: [4, 5], color: 'rgb(110,173,138)'},
+                  { range: [5, 6], color: 'rgb(65,157,129)'},
+                  { range: [6, 7], color: 'rgb(25,137,125)'},
+                  { range: [7, 8], color: 'rgb(18,116,117)'},
+                  { range: [8, 9], color: 'rgb(25,94,106)'}
+                 ]}
+        };
+
+        var gauge_plot_data_0 = [trace0_3];
+    
+        Plotly.newPlot("gauge",gauge_plot_data_0);
+
         
     }
 
