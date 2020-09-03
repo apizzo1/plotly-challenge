@@ -1,6 +1,6 @@
 
 // Use the D3 library to read in samples.json.
-console.log("TESTING")
+
 d3.json("data/samples.json").then((data) => {
     console.log(data);
 
@@ -78,7 +78,7 @@ d3.json("data/samples.json").then((data) => {
         };
         // format plot with axes labels and title
         var layout = {
-            title: `Top 10 OTUs found in Test Subject ${names[0]}`,
+            title: `Top 10 OTUs found in Test Subject`,
             xaxis: {title: "Sample Values"},
             // reversing order of y axis
             // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
@@ -104,7 +104,7 @@ d3.json("data/samples.json").then((data) => {
         }
 
         var layout_bubble_0 = {
-            title: `All OTUs for Test Subject ${names[0]}`,
+            title: `All OTUs for Test Subject`,
             xaxis: {title: "OTU IDs"},
             yaxis: {title: "Sample Values"}
         }
@@ -175,6 +175,9 @@ d3.json("data/samples.json").then((data) => {
         var patient_chosen = names.indexOf(option_choice);
         console.log(patient_chosen);
 
+        // Append header with test subject name
+        subject_header.append('h2').text(`Dashboard for Test Subject ${option_choice}`);
+
         // Demographics Data
 
         // Display each key-value pair from the metadata JSON object somewhere on the page.
@@ -201,28 +204,38 @@ d3.json("data/samples.json").then((data) => {
         // Plotting
 
         // plotting data in horizontal bar chart using patient index number
-        var trace = {
-            type: 'bar',
-            // Use sample_values as the values for the bar chart.
-            x: top_sample_values[patient_chosen],
-            // Use otu_ids as the labels for the bar chart.
-            y: top_otu_ids[patient_chosen],
-            //  Use otu_labels as the hovertext for the chart.
-            text: top_otu_labels[patient_chosen],
-            orientation: 'h'
-        };
-        // format plot with axes labels and title
-        var layout = {
-            title: `Top 10 OTUs found in Test Subject ${option_choice}`,
-            xaxis: {title: "Sample Values"},
-            // reversing order of y axis
-            // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
-            yaxis: {title: "OTU IDs", autorange: 'reversed'}
-        };
+        // var trace = {
+        //     type: 'bar',
+        //     // Use sample_values as the values for the bar chart.
+        //     x: top_sample_values[patient_chosen],
+        //     // Use otu_ids as the labels for the bar chart.
+        //     y: top_otu_ids[patient_chosen],
+        //     //  Use otu_labels as the hovertext for the chart.
+        //     text: top_otu_labels[patient_chosen],
+        //     orientation: 'h'
+        // };
+        // // format plot with axes labels and title
+        // var layout = {
+        //     title: `Top 10 OTUs found in Test Subject ${option_choice}`,
+        //     xaxis: {title: "Sample Values"},
+        //     // reversing order of y axis
+        //     // source: https://stackoverflow.com/questions/46201532/plotly-js-reversing-the-horizontal-bar-chart-in-plotly
+        //     yaxis: {title: "OTU IDs", autorange: 'reversed'}
+        // };
 
-        var bar_plot_data = [trace];
+        // var bar_plot_data = [trace];
 
-        Plotly.newPlot("bar", bar_plot_data, layout);
+        // Plotly.newPlot("bar", bar_plot_data, layout);
+
+        // Restyle bar plot with selected test subject data
+        var x_bar = top_sample_values[patient_chosen];
+        var y_bar = top_otu_ids[patient_chosen];
+        var text_bar = top_otu_labels[patient_chosen];
+        Plotly.restyle("bar", "x", [x_bar]);
+        Plotly.restyle("bar", "y", [y_bar]);
+        Plotly.restyle("bar", "text", [text_bar]);
+
+
 
         
         // Create a bubble chart that displays each sample.
