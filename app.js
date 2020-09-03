@@ -119,7 +119,7 @@ d3.json("data/samples.json").then((data) => {
         {
             // reference the demographics data for the test subject to get washing frequency
             value: data.metadata[0].wfreq,
-            title: { text: "Belly Button Washing Frequency" },
+            title: { text: "Weekly Belly Button Washing Frequency" },
             type: "indicator",
             mode: "gauge+number",
             gauge: {
