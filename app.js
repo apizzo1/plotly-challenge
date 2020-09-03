@@ -1,6 +1,6 @@
 
 // Use the D3 library to read in samples.json.
-
+console.log("TESTING")
 d3.json("data/samples.json").then((data) => {
     console.log(data);
 
